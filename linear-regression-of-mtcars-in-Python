@@ -1,0 +1,37 @@
+import pandas as pd
+mt=pd.read_csv(r"C:\Users\AKHIL\Desktop\R csv\mtcars1.csv")
+print(mt.head())
+mt_x=mt.iloc[:,2:]
+mt_x.head()
+mt_y=mt.iloc[:,1]
+mt_y.head()
+##################################################################################################################
+import sklearn
+from sklearn.model_selection import train_test_split
+mt_x_train,mt_x_test,mt_y_train,mt_y_test=train_test_split(mt_x,mt_y,test_size=.2,random_state=101)
+print(mt_x_train.shape)###### checking no of rows in test and train are same ####
+print(mt_y_train.shape)
+print(mt_x_test.shape)
+print(mt_y_test.shape)
+###########################################################################################################################
+from sklearn import linear_model
+import statsmodels.formula.api as sm
+
+mt_model=sm.OLS(mt_y_train,mt_x_train).fit()
+print(mt_model.summary2())
+
+mt_predict=mt_model.predict(mt_x_test)
+mt_predict
+
+
+pred_actual1=pd.DataFrame({'predicted':mt_predict,'actual':mt_y_test})
+pred_actual1.head()
+
+
+from sklearn import metrics
+mt_MAE=metrics.mean_absolute_error(mt_y_test,mt_predict)
+print(mt_MAE)
+
+mt_MSE=metrics.mean_squared_error(mt_y_test,mt_predict)
+print(mt_MSE)
+print(pow(mt_MSE,.5))
